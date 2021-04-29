@@ -1,9 +1,7 @@
 version: "3.7"
 services:
  web-server:
-  build:
-   dockerfile: php.Dockerfile
-   context: .
+  image: jamesattree/php_apache:latest
   restart: always
   volumes:
    - "./html/:/var/www/html/"
@@ -17,6 +15,8 @@ services:
     MYSQL_ROOT_PASSWORD: root
   volumes:
    - mysql-data:/var/lib/mysql
+  ports:
+   - 3306:3306
 
  phpmyadmin:
   image: phpmyadmin/phpmyadmin:5.0.1
