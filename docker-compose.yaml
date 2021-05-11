@@ -4,9 +4,12 @@ services:
   image: jamesattree/php_apache:latest
   restart: always
   volumes:
-   - "./html/:/var/www/html/"
+   - "/var/www2/html/:/var/www/html/"
+   - "/etc/letsencrypt/:/etc/letsencrypt/"
+   - apache_conf:/etc/apache2
   ports:
-   - "8080:80"
+   - "80:80"
+   - "443:443"
 
  mysql-server:
   image: mysql:8.0.19
@@ -19,14 +22,18 @@ services:
    - 3306:3306
 
  phpmyadmin:
-  image: phpmyadmin/phpmyadmin:5.0.1
+  image: jamesattree/phpmyadminssl
   restart: always
+  volumes:
+   - phpmyadmin_apache_conf:/etc/apache2
+   - "/etc/letsencrypt/:/etc/letsencrypt/"
   environment:
    PMA_HOST: mysql-server
-   PMA_USER: root
-   PMA_PASSWORD: root
   ports:
    - "5000:80"
+   - "8443:443"
 
 volumes:
  mysql-data:
+ apache_conf:
+ phpmyadmin_apache_conf:
